@@ -1,5 +1,3 @@
-'use strict';
-
 require('dotenv').config({
     path: 'variables.env'
 });
@@ -12,9 +10,9 @@ const { withRetries } = require('./with-retries');
  * Looks up the location of the cassandra service and creates a client with the options/keyspace 
  * specified. Returns a Promise of the created client.
  */
-function createClientAsync(keyspace, queryOptions) {
+const createClientAsync = (keyspace, queryOptions) => {
   return new Promise ((resolve, reject) => {
-      let contactPoints = process.env.CASSANDRA_CONTACT_POINTS.split(',');
+      const contactPoints = process.env.CASSANDRA_CONTACT_POINTS.split(',');
       console.log('info Servers', contactPoints);
       return resolve(contactPoints);
      })

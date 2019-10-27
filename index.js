@@ -1,8 +1,4 @@
-'use strict';
-
-const {
-  initCassandraAsync
-} = require('./src/cassandra.js');
+const { initCassandraAsync } = require('./src/cassandra.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Promise = require('bluebird');
@@ -24,7 +20,7 @@ Promise.config({
 /**
  * Connect to Cassandra and start Express
  */
-function startAsync() {
+const startAsync = () => {
   // Start by initializing cassandra
   return initCassandraAsync()
     // Create any tables here
@@ -81,7 +77,7 @@ function startAsync() {
         inc_req_timeout: 1000*60  // 60 seconds 
       }))
 
-      const port = 3003;
+      const port = process.env.EXPRESS_PORT;
 
       app.get('/', (req, res) => res.send('Hello World!'));
 
@@ -106,7 +102,7 @@ let startPromise = startAsync();
 /**
  * Handle stopping everything. From Datastax example.
  */
-function stop() {
+const stop = () => {
   console.log('info', 'Attempting to shutdown');
   if (startPromise.isFulfilled()) {
     let server = startPromise.value();
@@ -123,13 +119,3 @@ function stop() {
 // Try to gracefully shutdown on SIGTERM and SIGINT
 process.on('SIGTERM', stop);
 process.on('SIGINT', stop);
-
-// Graceful shutdown attempt in Windows
-if (process.platform === 'win32') {
-  // Simulate SIGINT on Windows (see http://stackoverflow.com/questions/10021373/what-is-the-windows-equivalent-of-process-onsigint-in-node-js)
-  createInterface({
-      input: process.stdin,
-      output: process.stdout
-    })
-    .on('SIGINT', () => process.emit('SIGINT'));
-}
