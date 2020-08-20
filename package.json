@@ -22,7 +22,7 @@
   "author": "Ryan Weal",
   "license": "Apache-2.0",
   "dependencies": {
-    "bcrypt": "^3.0.2",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "cassandra-driver": "^3.5.0",
